@@ -110,7 +110,7 @@ def build_ass_script(
     # Metrics scaling
     reference_height = min(play_res_x, play_res_y)
     scale = reference_height / 720.0
-    scaled_font_size = max(18, int(style.font_size * scale))
+    scaled_font_size = max(20, int(style.font_size * scale))
     scaled_radius = max(4, int(style.box_radius * scale))
     scaled_pad_x = max(12, int(style.box_padding_x * scale))
     scaled_pad_y = max(8, int(style.box_padding_y * scale))

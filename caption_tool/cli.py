@@ -39,6 +39,8 @@ def build_parser() -> argparse.ArgumentParser:
     proc_parser.add_argument("--box-border-width", type=float, default=None, help="Border stroke width around badge (default: 1.5)")
     proc_parser.add_argument("--box-border-color", type=str, default=None, help="Border stroke color (default: #2A2A2A)")
     proc_parser.add_argument("--font", type=str, default=None, help="Font name (e.g. 'Arial Black')")
+    proc_parser.add_argument("--font-size", "-fs", type=int, default=None, help="Base font size (default: 40)")
+    proc_parser.add_argument("--box", action=argparse.BooleanOptionalAction, default=None, help="Enable or disable background box (default: False)")
     proc_parser.add_argument("--words-per-chunk", type=int, default=None, help="Max words per display burst (default: 3)")
     proc_parser.add_argument("--api-key", type=str, default=None, help="Deepgram API Key (or set DEEPGRAM_API_KEY env var)")
     proc_parser.add_argument("--mock", action="store_true", help="Run with mock transcription (offline test, 0 credits)")
@@ -69,7 +71,7 @@ def main(args: Optional[List[str]] = None) -> int:
     elif parsed.command == "schema":
         schema = {
             "name": "generate_stylized_captions",
-            "description": "Transcribes a video with Deepgram and burns stylized, centered captions (with vibrant red/green highlights and dark background box) into the video.",
+            "description": "Transcribes a video with Deepgram and burns stylized, centered captions (with vibrant red/green highlights and crisp outline) into the video.",
             "parameters": {
                 "type": "object",
                 "properties": {
@@ -78,8 +80,8 @@ def main(args: Optional[List[str]] = None) -> int:
                     "style": {
                         "type": "string",
                         "enum": list(PRESETS.keys()),
-                        "default": "boxed_red_accent",
-                        "description": "Style preset name (e.g. boxed_red_accent, boxed_green_accent, hormozi_yellow)"
+                        "default": DEFAULT_PRESET,
+                        "description": "Style preset name (default: bold_red_accent)"
                     },
                     "position": {
                         "type": "string",
@@ -112,6 +114,7 @@ def main(args: Optional[List[str]] = None) -> int:
                 position=parsed.position,
                 highlight_color=parsed.highlight_color,
                 primary_color=parsed.primary_color,
+                has_box=parsed.box,
                 box_color=parsed.box_color,
                 box_opacity=parsed.box_opacity,
                 box_rounded=parsed.box_rounded,
@@ -119,6 +122,7 @@ def main(args: Optional[List[str]] = None) -> int:
                 box_border_width=parsed.box_border_width,
                 box_border_color=parsed.box_border_color,
                 font_name=parsed.font,
+                font_size=parsed.font_size,
                 words_per_chunk=parsed.words_per_chunk,
                 api_key=parsed.api_key,
                 mock=parsed.mock,

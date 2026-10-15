@@ -5,11 +5,53 @@ from .config import CaptionStyle
 
 
 PRESETS: Dict[str, CaptionStyle] = {
-    # 1. User Favorite: Dark rectangular box with bold white text & vibrant red highlights
+    # 1. Default Style: Bold white text with vibrant red active-word highlight, strong black outline, no box
+    "bold_red_accent": CaptionStyle(
+        name="bold_red_accent",
+        font_name="Arial Black",
+        font_size=40,
+        primary_color="#FFFFFF",
+        highlight_color="#FF2020",      # Vibrant Crimson Red
+        secondary_color="#FF4D4D",
+        has_box=False,
+        box_rounded=False,
+        outline_width=3.2,
+        outline_color="#000000",
+        shadow_depth=1.8,
+        shadow_color="#000000",
+        all_caps=True,
+        bold=True,
+        position="middle",
+        words_per_chunk=3,
+        highlight_mode="active_word",
+    ),
+
+    # 2. Bold Green Variant: Bold white text with shiny neon green highlight, no box
+    "bold_green_accent": CaptionStyle(
+        name="bold_green_accent",
+        font_name="Arial Black",
+        font_size=40,
+        primary_color="#FFFFFF",
+        highlight_color="#00FF66",      # Shiny Neon Green
+        secondary_color="#39FF14",
+        has_box=False,
+        box_rounded=False,
+        outline_width=3.2,
+        outline_color="#000000",
+        shadow_depth=1.8,
+        shadow_color="#000000",
+        all_caps=True,
+        bold=True,
+        position="middle",
+        words_per_chunk=3,
+        highlight_mode="active_word",
+    ),
+
+    # 3. Dark rectangular box with bold white text & vibrant red highlights
     "boxed_red_accent": CaptionStyle(
         name="boxed_red_accent",
         font_name="Arial Black",
-        font_size=26,
+        font_size=32,
         primary_color="#FFFFFF",
         highlight_color="#FF2020",      # Vibrant Crimson Red
         secondary_color="#FF4D4D",
@@ -31,11 +73,11 @@ PRESETS: Dict[str, CaptionStyle] = {
         highlight_mode="active_word",
     ),
 
-    # 2. User Favorite Variant: Dark rectangular box with shiny neon green highlight
+    # 4. Dark rectangular box with shiny neon green highlight
     "boxed_green_accent": CaptionStyle(
         name="boxed_green_accent",
         font_name="Arial Black",
-        font_size=26,
+        font_size=32,
         primary_color="#FFFFFF",
         highlight_color="#00FF66",      # Shiny Neon Green
         secondary_color="#39FF14",
@@ -142,12 +184,12 @@ PRESETS: Dict[str, CaptionStyle] = {
     ),
 }
 
-DEFAULT_PRESET = "boxed_red_accent"
+DEFAULT_PRESET = "bold_red_accent"
 
 
 def get_preset(name: str = DEFAULT_PRESET) -> CaptionStyle:
-    """Get a copy of a preset by name or default to boxed_red_accent."""
-    if name not in PRESETS:
+    """Get a copy of a preset by name or default to bold_red_accent."""
+    if name not in PRESETS or name == "default":
         name = DEFAULT_PRESET
     preset = PRESETS[name]
     # Return a shallow copy so modifications don't mutate the preset dictionary

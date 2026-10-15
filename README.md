@@ -32,7 +32,7 @@ export DEEPGRAM_API_KEY="your_deepgram_api_key_here"
 
 ## 💻 Agent CLI Usage
 
-### Basic Command (Default: Middle position + Dark Box with Bold White Text & Bold Red Highlight):
+### Basic Command (Default: Middle position, clean bold white text with bold red highlight, crisp outline, NO dark box):
 ```bash
 python -m caption_tool process input.mp4 --output output.mp4
 ```
@@ -45,7 +45,7 @@ python -m caption_tool process input.mp4 --output output.mp4
   "output_video": "C:\\path\\output.mp4",
   "duration_seconds": 15.4,
   "resolution": "1080x1920",
-  "style_applied": "boxed_red_accent",
+  "style_applied": "bold_red_accent",
   "position": "middle",
   "highlight_color": "#FF2020",
   "word_count": 48,
@@ -63,8 +63,10 @@ Run `python -m caption_tool presets` to list all presets:
 
 | Preset Name | Visual Description | Best For |
 | :--- | :--- | :--- |
-| `boxed_red_accent` *(Default)* | **Dark rounded-corner badge**, bold white text, **vibrant red highlight** (`#FF2020`), subtle border | Ali Abdaal / Vox / High contrast viral reels |
-| `boxed_green_accent` | **Dark rounded-corner badge**, bold white text, **shiny neon green highlight** (`#00FF66`), subtle border | High-tech, crypto, finance, and trading reels |
+| `bold_red_accent` *(Default)* | **No box**, large punchy white text, **vibrant red highlight** (`#FF2020`), crisp black stroke & shadow | Viral shorts, reels, TikTok, modern high retention |
+| `bold_green_accent` | **No box**, large punchy white text, **shiny neon green highlight** (`#00FF66`), crisp stroke & shadow | High-tech, crypto, finance, and trading reels |
+| `boxed_red_accent` | **Dark rounded-corner badge**, bold white text, **vibrant red highlight** (`#FF2020`), subtle border | Ali Abdaal / Vox / documentary badge style |
+| `boxed_green_accent` | **Dark rounded-corner badge**, bold white text, **shiny neon green highlight** (`#00FF66`), subtle border | High-tech boxed badge style |
 | `hormozi_yellow` | Massive bold font, thick black outline, drop shadow, **electric neon yellow** (`#FFE600`) | Fast-paced viral shorts / Alex Hormozi style |
 | `beast_pop` | Heavy pop font with electric cyan (`#00D4FF`) & neon green accents | MrBeast high-energy viral retention |
 | `minimal_clean` | Translucent frosted dark rounded pill, modern clean typography | Apple-style aesthetics, educational videos |
@@ -77,7 +79,9 @@ Run `python -m caption_tool presets` to list all presets:
 Any preset can be tweaked with CLI flags:
 
 - `--position`: `middle` (default), `bottom`, `top`.
-- `--box-rounded` / `--no-box-rounded`: Enable/disable smooth rounded corners on background badge (default: `True`).
+- `--font-size` / `-fs`: Base font size (default `40`, scales responsive to resolution).
+- `--box` / `--no-box`: Enable/disable background box (default `False`).
+- `--box-rounded` / `--no-box-rounded`: Enable/disable smooth rounded corners when box is enabled (default `True`).
 - `--box-radius`: Corner radius in pixels (default `20`, scales responsive to resolution).
 - `--box-border-width`: Subtle border stroke width around badge (default `1.5`px).
 - `--box-border-color`: Border stroke color (default `"#2A2A2A"`).

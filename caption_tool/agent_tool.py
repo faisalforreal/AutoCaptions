@@ -23,8 +23,10 @@ class VideoCaptionAgentTool:
     def get_supported_presets(self) -> Dict[str, str]:
         """Return a mapping of available style preset names to their descriptions."""
         return {
-            "boxed_red_accent": "Dark rectangular background, bold white text, bold vibrant red highlights (Default)",
-            "boxed_green_accent": "Dark rectangular background, bold white text, shiny neon green highlights",
+            "bold_red_accent": "Bold white text, vibrant red active highlight, crisp black outline, no box (Default)",
+            "bold_green_accent": "Bold white text, shiny neon green active highlight, crisp black outline, no box",
+            "boxed_red_accent": "Dark rectangular background badge, bold white text, vibrant red highlights",
+            "boxed_green_accent": "Dark rectangular background badge, bold white text, shiny neon green highlights",
             "hormozi_yellow": "Alex Hormozi style: Thick black stroke, drop shadow, electric neon yellow active-word highlight",
             "beast_pop": "MrBeast style: High-energy bold pop font with cyan and neon green highlights",
             "minimal_clean": "Apple/Vox aesthetic: Translucent dark frosted pill with clean modern typography",
@@ -39,6 +41,7 @@ class VideoCaptionAgentTool:
         position: str = "middle",
         highlight_color: Optional[str] = None,
         primary_color: Optional[str] = None,
+        has_box: Optional[bool] = None,
         box_color: Optional[str] = None,
         box_opacity: Optional[float] = None,
         box_rounded: Optional[bool] = None,
@@ -46,6 +49,7 @@ class VideoCaptionAgentTool:
         box_border_width: Optional[float] = None,
         box_border_color: Optional[str] = None,
         font_name: Optional[str] = None,
+        font_size: Optional[int] = None,
         words_per_chunk: Optional[int] = None,
         api_key: Optional[str] = None,
         mock: bool = False,
@@ -84,6 +88,10 @@ class VideoCaptionAgentTool:
             style.highlight_color = highlight_color
         if primary_color:
             style.primary_color = primary_color
+        if has_box is not None:
+            style.has_box = has_box
+            if not has_box:
+                style.box_rounded = False
         if box_color:
             style.box_color = box_color
             style.has_box = True
@@ -99,6 +107,8 @@ class VideoCaptionAgentTool:
             style.box_border_color = box_border_color
         if font_name:
             style.font_name = font_name
+        if font_size is not None:
+            style.font_size = max(10, int(font_size))
         if words_per_chunk:
             style.words_per_chunk = max(1, int(words_per_chunk))
 

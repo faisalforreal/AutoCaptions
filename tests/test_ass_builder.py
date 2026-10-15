@@ -90,6 +90,24 @@ class TestASSBuilder(unittest.TestCase):
         # Must contain cubic bezier commands
         self.assertIn(" b ", path)
 
+    def test_default_preset_bold_red_no_box(self):
+        style = get_preset()  # Default preset
+        self.assertEqual(style.name, "bold_red_accent")
+        self.assertFalse(style.has_box)
+        self.assertFalse(style.box_rounded)
+        self.assertEqual(style.font_size, 40)
+        self.assertEqual(style.highlight_color, "#FF2020")
+
+        chunk = ChunkItem(
+            start=0.5,
+            end=1.5,
+            words=[WordItem("TEST", 0.5, 1.5, "TEST")]
+        )
+        ass_script = build_ass_script([chunk], style, play_res_x=1080, play_res_y=1920)
+        self.assertNotIn("BoxBadge", ass_script)
+        self.assertIn("Style: Default,Arial Black,", ass_script)
+        self.assertIn(r"{\c&H002020FF&}TEST{\c&H00FFFFFF&}", ass_script)
+
 
 if __name__ == "__main__":
     unittest.main()

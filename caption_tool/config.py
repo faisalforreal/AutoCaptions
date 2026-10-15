@@ -34,14 +34,14 @@ class CaptionStyle:
     """Style configuration for video subtitles."""
     name: str = "custom"
     font_name: str = "Arial Black"
-    font_size: int = 24  # Base font size (will be auto-scaled to video resolution)
+    font_size: int = 40  # Base font size (increased for high-impact readability)
     primary_color: str = "#FFFFFF"      # Base text color (hex)
     highlight_color: str = "#FF2020"    # Vibrant Red or Neon Green highlight (hex)
     secondary_color: str = "#00FF66"    # Secondary accent color (e.g. for numbers or alternating keywords)
     
     # Background Box styling
-    has_box: bool = True
-    box_rounded: bool = True            # Modern badge with smooth rounded corners
+    has_box: bool = False               # Default: no dark background box
+    box_rounded: bool = False           # Modern badge with smooth rounded corners
     box_radius: int = 20                # Corner radius (pixels, scaled to resolution)
     box_padding_x: int = 36             # Horizontal padding (pixels, scaled)
     box_padding_y: int = 20             # Vertical padding (pixels, scaled)
@@ -51,9 +51,9 @@ class CaptionStyle:
     box_opacity: float = 0.90           # Opacity (0.0 to 1.0)
     
     # Outline / Stroke styling
-    outline_width: float = 2.0          # Outline width in pixels
+    outline_width: float = 3.2          # Outline width in pixels for crisp contrast without box
     outline_color: str = "#000000"      # Stroke color (hex)
-    shadow_depth: float = 0.0           # Drop shadow depth
+    shadow_depth: float = 1.8           # Drop shadow depth
     shadow_color: str = "#000000"
     
     # Text behavior
@@ -77,7 +77,7 @@ class CaptionStyle:
         """
         # Dynamic responsive font size scaling
         reference_height = min(play_res_x, play_res_y)
-        scaled_font_size = max(18, int(self.font_size * (reference_height / 720.0)))
+        scaled_font_size = max(20, int(self.font_size * (reference_height / 720.0)))
 
         primary = hex_to_ass_color(self.primary_color)
         secondary = hex_to_ass_color(self.secondary_color)
