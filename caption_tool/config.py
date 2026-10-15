@@ -41,8 +41,14 @@ class CaptionStyle:
     
     # Background Box styling
     has_box: bool = True
-    box_color: str = "#141414"          # Dark rectangular background (hex)
-    box_opacity: float = 0.88           # Opacity (0.0 to 1.0)
+    box_rounded: bool = True            # Modern badge with smooth rounded corners
+    box_radius: int = 20                # Corner radius (pixels, scaled to resolution)
+    box_padding_x: int = 36             # Horizontal padding (pixels, scaled)
+    box_padding_y: int = 20             # Vertical padding (pixels, scaled)
+    box_border_width: float = 1.5       # Subtle border stroke width around rounded box
+    box_border_color: str = "#2A2A2A"   # Subtle stroke color around badge
+    box_color: str = "#121212"          # Dark rectangular background (hex)
+    box_opacity: float = 0.90           # Opacity (0.0 to 1.0)
     
     # Outline / Stroke styling
     outline_width: float = 2.0          # Outline width in pixels
@@ -66,14 +72,10 @@ class CaptionStyle:
 
     def to_ass_style(self, play_res_x: int, play_res_y: int) -> str:
         """
-        Generate ASS [V4+ Styles] line.
-        Format:
-        Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour,
-                Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle,
-                BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+        Generate ASS [V4+ Styles] line(s).
+        For rounded badges, emits both foreground text style and vector badge style.
         """
         # Dynamic responsive font size scaling
-        # Standard base is 1080p (height 1920 or 1080)
         reference_height = min(play_res_x, play_res_y)
         scaled_font_size = max(18, int(self.font_size * (reference_height / 720.0)))
 
@@ -81,20 +83,6 @@ class CaptionStyle:
         secondary = hex_to_ass_color(self.secondary_color)
         outline = hex_to_ass_color(self.outline_color)
         
-        if self.has_box:
-            # BorderStyle 3 = Opaque rectangular box using BackColour
-            border_style = 3
-            back = hex_to_ass_color(self.box_color, self.box_opacity)
-            box_padding = max(2.0, self.outline_width)
-            outline_val = box_padding
-            shadow_val = 0.0
-        else:
-            # BorderStyle 1 = Outline + drop shadow
-            border_style = 1
-            back = hex_to_ass_color(self.shadow_color, 0.7)
-            outline_val = self.outline_width
-            shadow_val = self.shadow_depth
-
         bold_val = -1 if self.bold else 0
         italic_val = -1 if self.italic else 0
 
@@ -111,14 +99,61 @@ class CaptionStyle:
         margin_r = 20
         margin_v = self.margin_v if self.margin_v != 0 else (40 if align != 5 else 0)
 
-        style_line = (
-            f"Style: Default,{self.font_name},{scaled_font_size},"
-            f"{primary},{secondary},{outline},{back},"
-            f"{bold_val},{italic_val},0,0,100,100,0,0,"
-            f"{border_style},{outline_val:.1f},{shadow_val:.1f},{align},"
-            f"{margin_l},{margin_r},{margin_v},1"
-        )
-        return style_line
+        if self.has_box and self.box_rounded:
+            # Stylized rounded badge:
+            # 1. Text Style: Clean typography with subtle outline for maximum contrast
+            text_border_style = 1
+            text_back = hex_to_ass_color("#000000", 0.0)
+            text_outline_val = max(0.0, self.outline_width if self.outline_width > 0 else 0.5)
+            text_shadow_val = 0.0
+            
+            text_style_line = (
+                f"Style: Default,{self.font_name},{scaled_font_size},"
+                f"{primary},{secondary},{outline},{text_back},"
+                f"{bold_val},{italic_val},0,0,100,100,0,0,"
+                f"{text_border_style},{text_outline_val:.1f},{text_shadow_val:.1f},{align},"
+                f"{margin_l},{margin_r},{margin_v},1"
+            )
+            
+            # 2. BoxBadge Style for vector drawing (\p1)
+            box_fill = hex_to_ass_color(self.box_color, self.box_opacity)
+            box_stroke = hex_to_ass_color(self.box_border_color, self.box_opacity if self.box_border_width > 0 else 0.0)
+            box_style_line = (
+                f"Style: BoxBadge,{self.font_name},{scaled_font_size},"
+                f"{box_fill},{secondary},{box_stroke},{text_back},"
+                f"0,0,0,0,100,100,0,0,"
+                f"1,{self.box_border_width:.1f},0.0,7,"
+                f"0,0,0,1"
+            )
+            return f"{text_style_line}\n{box_style_line}"
+
+        elif self.has_box and not self.box_rounded:
+            # Classic square rectangular box using ASS BorderStyle 3
+            border_style = 3
+            back = hex_to_ass_color(self.box_color, self.box_opacity)
+            box_padding = max(2.0, self.outline_width)
+            outline_val = box_padding
+            shadow_val = 0.0
+            return (
+                f"Style: Default,{self.font_name},{scaled_font_size},"
+                f"{primary},{secondary},{outline},{back},"
+                f"{bold_val},{italic_val},0,0,100,100,0,0,"
+                f"{border_style},{outline_val:.1f},{shadow_val:.1f},{align},"
+                f"{margin_l},{margin_r},{margin_v},1"
+            )
+        else:
+            # BorderStyle 1 = Outline + drop shadow
+            border_style = 1
+            back = hex_to_ass_color(self.shadow_color, 0.7)
+            outline_val = self.outline_width
+            shadow_val = self.shadow_depth
+            return (
+                f"Style: Default,{self.font_name},{scaled_font_size},"
+                f"{primary},{secondary},{outline},{back},"
+                f"{bold_val},{italic_val},0,0,100,100,0,0,"
+                f"{border_style},{outline_val:.1f},{shadow_val:.1f},{align},"
+                f"{margin_l},{margin_r},{margin_v},1"
+            )
 
 
 @dataclass

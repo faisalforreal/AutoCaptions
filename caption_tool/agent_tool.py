@@ -41,6 +41,10 @@ class VideoCaptionAgentTool:
         primary_color: Optional[str] = None,
         box_color: Optional[str] = None,
         box_opacity: Optional[float] = None,
+        box_rounded: Optional[bool] = None,
+        box_radius: Optional[int] = None,
+        box_border_width: Optional[float] = None,
+        box_border_color: Optional[str] = None,
         font_name: Optional[str] = None,
         words_per_chunk: Optional[int] = None,
         api_key: Optional[str] = None,
@@ -85,6 +89,14 @@ class VideoCaptionAgentTool:
             style.has_box = True
         if box_opacity is not None:
             style.box_opacity = max(0.0, min(1.0, float(box_opacity)))
+        if box_rounded is not None:
+            style.box_rounded = box_rounded
+        if box_radius is not None:
+            style.box_radius = max(0, int(box_radius))
+        if box_border_width is not None:
+            style.box_border_width = max(0.0, float(box_border_width))
+        if box_border_color:
+            style.box_border_color = box_border_color
         if font_name:
             style.font_name = font_name
         if words_per_chunk:

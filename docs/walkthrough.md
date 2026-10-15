@@ -36,11 +36,11 @@ video_caption_tool/
 ## 🎨 Supported Styles
 
 ### 1. `boxed_red_accent` *(Default - Your Favorite)*
-- **Visuals**: Dark charcoal / black rectangular box (`#121212` with 88% opacity), bold white uppercase text (`Arial Black`), and active words highlighted in **vibrant bold crimson red** (`#FF2020`).
+- **Visuals**: Dark charcoal / black rounded-corner badge (`#121212` with 90% opacity, subtle border stroke, smooth Bézier rounded corners), bold white uppercase text (`Arial Black`), and active words highlighted in **vibrant bold crimson red** (`#FF2020`).
 - **Position**: Middle of the video (`Alignment 5`).
 
 ### 2. `boxed_green_accent`
-- **Visuals**: Dark rectangular box with bold white text and active words highlighted in **shiny neon green** (`#00FF66`).
+- **Visuals**: Dark rounded-corner badge with bold white text and active words highlighted in **shiny neon green** (`#00FF66`).
 
 ### 3. `hormozi_yellow`
 - **Visuals**: Massive uppercase text, thick black outline, drop shadow, and **electric neon yellow** (`#FFE600`) dynamic highlight.

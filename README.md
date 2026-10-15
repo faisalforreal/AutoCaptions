@@ -63,11 +63,11 @@ Run `python -m caption_tool presets` to list all presets:
 
 | Preset Name | Visual Description | Best For |
 | :--- | :--- | :--- |
-| `boxed_red_accent` *(Default)* | **Dark rectangular box**, bold white text, **vibrant red highlight** (`#FF2020`) | Ali Abdaal / Vox / High contrast documentaries |
-| `boxed_green_accent` | **Dark rectangular box**, bold white text, **shiny neon green highlight** (`#00FF66`) | High-tech, crypto, finance, and trading reels |
+| `boxed_red_accent` *(Default)* | **Dark rounded-corner badge**, bold white text, **vibrant red highlight** (`#FF2020`), subtle border | Ali Abdaal / Vox / High contrast viral reels |
+| `boxed_green_accent` | **Dark rounded-corner badge**, bold white text, **shiny neon green highlight** (`#00FF66`), subtle border | High-tech, crypto, finance, and trading reels |
 | `hormozi_yellow` | Massive bold font, thick black outline, drop shadow, **electric neon yellow** (`#FFE600`) | Fast-paced viral shorts / Alex Hormozi style |
 | `beast_pop` | Heavy pop font with electric cyan (`#00D4FF`) & neon green accents | MrBeast high-energy viral retention |
-| `minimal_clean` | Frosted dark pill, modern clean typography | Apple-style aesthetics, educational videos |
+| `minimal_clean` | Translucent frosted dark rounded pill, modern clean typography | Apple-style aesthetics, educational videos |
 | `classic_sub` | Clean standard subtitles at bottom/middle | Accessibility and cinema |
 
 ---
@@ -77,19 +77,24 @@ Run `python -m caption_tool presets` to list all presets:
 Any preset can be tweaked with CLI flags:
 
 - `--position`: `middle` (default), `bottom`, `top`.
+- `--box-rounded` / `--no-box-rounded`: Enable/disable smooth rounded corners on background badge (default: `True`).
+- `--box-radius`: Corner radius in pixels (default `20`, scales responsive to resolution).
+- `--box-border-width`: Subtle border stroke width around badge (default `1.5`px).
+- `--box-border-color`: Border stroke color (default `"#2A2A2A"`).
 - `--highlight-color`: Any hex color (e.g. `"#FF2020"` for red, `"#00FF66"` for shiny green, `"#00D4FF"` for cyan).
 - `--primary-color`: Base text color (default `"#FFFFFF"`).
 - `--box-color`: Bounding box background hex (default `"#121212"`).
-- `--box-opacity`: Box opacity from `0.0` to `1.0` (default `0.88`).
+- `--box-opacity`: Box opacity from `0.0` to `1.0` (default `0.90`).
 - `--words-per-chunk`: Max words per burst (default `3`).
 - `--threads`: Max CPU threads for FFmpeg (default `2` to protect host agent).
 
-### Example: Custom Shiny Green in the Center
+### Example: Custom Shiny Green with Sleek Rounded Corners in the Center
 ```bash
 python -m caption_tool process input.mp4 \
   --position middle \
   --style boxed_green_accent \
   --highlight-color "#00FF66" \
+  --box-radius 24 \
   --output captioned.mp4
 ```
 
